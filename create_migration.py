@@ -48,7 +48,7 @@ To apply this migration, follow these steps:
 
 2. Add only the migration folder that was created to the commit:
     ```bash
-    git add migrations/{folder_name}git add migrations/{folder_name}
+    git add migrations/{folder_name}
     ```
 
 3. Commit the changes with the description as the commit message:
