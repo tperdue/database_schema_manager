@@ -58,14 +58,14 @@ To apply this migration, follow these steps:
 
 4. Push the commit to the remote repository named origin:
     ```bash
-    git push origin {folder_name}git push origin {folder_name}
+    git push origin {folder_name}
     ```
 
 5. Create a pull request and wait for it to be approved and merged into the main branch.
 
 6. After the pull request is merged, you can delete the local and remote feature branches:
     ```bash
-    git branch -d {folder_name}git branch -d {folder_name}
+    git branch -d {folder_name}
     git push origin --delete {folder_name}
 """
 
