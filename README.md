@@ -125,12 +125,6 @@ If you encounter any issues or have suggestions for improvements, I appreciate y
 
 The Database Schema Manager project is licensed under the [MIT License](./LICENSE). You are free to use, modify, and distribute the code to suit your needs.
 
-## Acknowledgements
 
-We would like to express our gratitude to all the contributors who have helped with the development and maintenance of the Database Schema Manager project.
-
-## Contact
-
-If you have any questions or need further assistance, please contact our support team at support@yourcompany.com.
 
 
