@@ -1,14 +1,19 @@
 import os
 import sqlite3
+from database import create_postgres_connection
 
 # Connect to the SQLite database
-conn = sqlite3.connect("db/migration_tracker.sqlite")
-cursor = conn.cursor()
+conn_sqlite = sqlite3.connect("db/migration_tracker.sqlite")
+cursor_sqlite = conn_sqlite.cursor()
+
+# Connect to the PostgreSQL database
+conn_postgres = create_postgres_connection()
+cursor_postgres = conn_postgres.cursor()
 
 # Select all records where migration_applied is False, ordered by id in ascending order
-cursor.execute(
+cursor_sqlite.execute(
     "SELECT * FROM migrations WHERE migration_applied = 'False' ORDER BY id ASC")
-results = cursor.fetchall()
+results = cursor_sqlite.fetchall()
 
 # Run the migrations
 for record in results:
@@ -27,7 +32,7 @@ for record in results:
     with open(up_file_path, "r") as up_file:
         sql_statements = up_file.read()
         try:
-            cursor.executescript(sql_statements)
+            cursor_postgres.execute(sql_statements)
             migration_status = "Migration successfully applied"
         except Exception as e:
             migration_status = str(e)
@@ -35,11 +40,16 @@ for record in results:
                 f"Error occurred while running migration {migration_id}. Aborting script.")
             break
 
-    # Update migration_applied and migration_status columns
-    cursor.execute("UPDATE migrations SET migration_applied = 'True', migration_status = ? WHERE id = ?",
-                   (migration_status, migration_id))
-    conn.commit()
+    # Update migration_applied and migration_status columns in SQLite
+    cursor_sqlite.execute(
+        "UPDATE migrations SET migration_applied = 'True', migration_status = ? WHERE id = ?", (migration_status, migration_id))
+    conn_sqlite.commit()
 
-# Close the database connection
-cursor.close()
-conn.close()
+# Commit changes in the PostgreSQL database
+conn_postgres.commit()
+
+# Close the database connections
+cursor_sqlite.close()
+conn_sqlite.close()
+cursor_postgres.close()
+conn_postgres.close()
